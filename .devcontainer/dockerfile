@@ -1,0 +1,29 @@
+# Base image
+FROM mcr.microsoft.com/devcontainers/base:ubuntu
+
+WORKDIR /WORK
+
+# Install .NET SDK
+# RUN apt-get update && \
+#  apt-get install -y dotnet-sdk-9.0
+
+# Copy the setup.sh file into the container
+COPY setup.sh .
+# Copy the entire .devcontainer folder
+# COPY  /workspaces/Work/.devcontainer .
+
+# Grant execute permissions to setup.sh
+# RUN chmod +x /.devcontainer/setup.sh
+
+RUN echo "vscode ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/vscode && \
+    chmod 0440 /etc/sudoers.d/vscode
+SHELL ["/bin/bash", "-c"]
+
+# Set the default non-root user
+USER $USERNAME
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs
+
+
