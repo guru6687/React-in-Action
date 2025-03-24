@@ -20,6 +20,7 @@
     //   "version": "1.0.0"
     // }
   
+
    
   },
   "customizations": {
@@ -27,16 +28,26 @@
       "extensions": [
         "ms-dotnettools.csharp",
         "dbaeumer.vscode-eslint",
-        "ms-azuretools.vscode-docker"
-      ]
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "streetsidesoftware.code-spell-checker",
+        "ms-dotnettools.csdevkit",
+        "ms-azuretools.vscode-bicep",
+        "hashicorp.terraform",
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.azurecli",
+        "dbaeumer.vscode-eslint"
+              ],
+        "settings": {
+                "editor.autoSave": "onFocusChange",
+                "editor.formatOnSave": true
+              }
     }
   },
   "remoteUser": "vscode",
   
 "postCreateCommand": "sudo chmod +x ./.devcontainer/setup.sh && sudo ./.devcontainer/setup.sh"
-
-
-
-
 
 }
