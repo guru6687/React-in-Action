@@ -1,53 +1,94 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet-mssql
 {
-  "name": "Multi-SDK Dev Container",
-  "build": 
-  {
-    "dockerfile": "./dockerfile"
-  },
-  "features": {
-    
-    "ghcr.io/devcontainers/features/dotnet:1": {
-      "version": "9.0"
-    }
-    // "ghcr.io/dotnet/aspire-devcontainer-feature/dotnetaspire": "1.0.0"
-    // "ghcr.io/devcontainers/features/dotnet:2": {
-    //   "version": "1.0.0"
-    // },
-    // "ghcr.io/nikiforovall/devcontainer-features/dotnet-csharpier:1": {
-    //   "version": "1.0.0"
-    // },
-    // "ghcr.io/dotnet/aspire-devcontainer-feature/dotnetaspire:1": {
-    //   "version": "1.0.0"
-    // }
-  
+	"name": ".NET (C#), Node.js (TypeScript) & MS SQL",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "app",
+	"workspaceFolder": "/Guru/${localWorkspaceFolderBasename}",
 
-   
-  },
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "ms-dotnettools.csharp",
-        "dbaeumer.vscode-eslint",
-        "ms-azuretools.vscode-docker",
-        "esbenp.prettier-vscode",
-        "streetsidesoftware.code-spell-checker",
-        "ms-dotnettools.csdevkit",
-        "ms-azuretools.vscode-bicep",
-        "hashicorp.terraform",
-        "ms-azuretools.vscode-docker",
-        "ms-vscode-remote.remote-containers",
-        "ms-vscode-remote.remote-containers",
-        "ms-vscode.azurecli",
-        "dbaeumer.vscode-eslint"
-              ],
-        "settings": {
-                "editor.autoSave": "onFocusChange",
-                "editor.formatOnSave": true
-              }
-    }
-  },
-  "remoteUser": "vscode",
-  
-"postCreateCommand": "sudo chmod +x ./.devcontainer/setup.sh && sudo ./.devcontainer/setup.sh"
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
 
+	// Configure tool-specific properties.
+	"customizations": {
+		// Configure properties specific to VS Code.
+		"vscode": {
+			// Set *default* container specific settings.json values on container create.
+			"settings": {
+				"mssql.connections": [
+					{
+						"server": "localhost,1433",
+						"database": "",
+						"authenticationType": "SqlLogin",
+						"user": "sa",
+						"password": "P@ssw0rd",
+						"emptyPasswordInput": false,
+						"savePassword": false,
+						"profileName": "mssql-container"
+					}
+				]
+			},
+
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-dotnettools.csharp",
+				"ms-mssql.mssql"
+			]
+		}
+	},
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [5000, 5001],
+	// "portsAttributes": {
+	//		"5001": {
+	//			"protocol": "https"
+	//		}
+	// }
+
+	// postCreateCommand.sh parameters: $1=SA password, $2=dacpac path, $3=sql script(s) path
+	"postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssw0rd' './bin/Debug/' './.devcontainer/mssql/'",
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"configureZshAsDefaultShell": true,
+			"installOhMyZsh": true,
+			"installOhMyZshConfig": true,
+			"upgradePackages": true,
+			"nonFreePackages": true,
+			"username": "vscode",
+			"userUid": "1001",
+			"userGid": "1001"
+		},
+		"ghcr.io/devcontainers/features/git:1": {
+			"ppa": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/github-cli:1": {
+			"installDirectlyFromGitHubRelease": true,
+			"version": "latest"
+		},
+		"ghcr.io/devcontainers/features/node:1": {
+			"nodeGypDependencies": true,
+			"installYarnUsingApt": true,
+			"version": "latest",
+			"pnpmVersion": "latest",
+			"nvmVersion": "latest"
+		},
+		"ghcr.io/dotnet/aspire-devcontainer-feature/dotnetaspire:1": {
+			"version": "9.0"
+		}
+		// ,
+		// "ghcr.io/devcontainers/features/docker-in-docker:2": {
+		// 	"moby": true,
+		// 	"azureDnsAutoDetection": true,
+		// 	"installDockerBuildx": true,
+		// 	"installDockerComposeSwitch": true,
+		// 	"disableIp6tables": true,
+		// 	"version": "20.10",
+		// 	"dockerDashComposeVersion": "v2"
+		// }
+	},
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	 "remoteUser": "root"
 }
